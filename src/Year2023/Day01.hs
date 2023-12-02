@@ -6,7 +6,7 @@ import qualified Data.List as List
 import qualified Data.Maybe as Maybe
 import qualified Safe
 
--- https://www.twitch.tv/videos/1991925197
+-- https://vods.exodrifter.space/2023/12/01/0708
 main :: IO ()
 main = do
   input <- readFile "data/2023-day01.txt"

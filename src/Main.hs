@@ -1,8 +1,7 @@
 module Main where
 
-import qualified Year2023.Day01
+import qualified Year2023.Day02
 
--- https://www.twitch.tv/videos/1991925197
 main :: IO ()
 main = do
-  Year2023.Day01.main
+  Year2023.Day02.main
