@@ -5,6 +5,8 @@ version: 0.1.0.0
 executable aoc
     main-is: Main.hs
     hs-source-dirs: src
+    other-modules:
+      Year2023.Day01
 
     ghc-option:
       -Wall
