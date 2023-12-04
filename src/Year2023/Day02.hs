@@ -1,6 +1,5 @@
 module Year2023.Day02
 ( main
-, extractGamePower
 ) where
 
 import qualified Data.Map as Map
@@ -42,7 +41,7 @@ extractValidGame maximums input = do
   else pure gameNumber
 
 --------------------------------------------------------------------------------
--- Part One
+-- Part Two
 --------------------------------------------------------------------------------
 
 -- Returns the game power for a game.
