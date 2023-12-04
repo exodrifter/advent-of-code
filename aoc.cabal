@@ -9,6 +9,7 @@ executable aoc
       Year2023.Day01
       Year2023.Day02
       Year2023.Day03
+      Year2023.Day04
 
     ghc-option:
       -Wall
