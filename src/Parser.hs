@@ -6,8 +6,9 @@ module Parser
 , lexeme
 
 -- Re-exports
-, Lexer.decimal
 , Combinators.many
+, Lexer.decimal
+, Mega.satisfy
 ) where
 
 import Data.Void (Void)

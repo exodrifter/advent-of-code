@@ -3,27 +3,21 @@ module Year2023.Day03
 ) where
 
 import Control.Applicative ((<|>))
-import Control.Monad.Combinators (many)
-import Data.Void (Void)
 
 import qualified Data.List as List
-import qualified Data.Map as Map
 import qualified Data.Maybe as Maybe
-import qualified Data.Text as T
-import qualified Safe
+import qualified Parser as P
 import qualified Text.Megaparsec as Mega
-import qualified Text.Megaparsec.Char as Char
-import qualified Text.Megaparsec.Char.Lexer as Lexer
-import qualified Text.Megaparsec.Error as Error
 import qualified Text.Megaparsec.Pos as Pos
 
 main :: IO ()
 main = do
-  input <- T.pack <$> readFile "data/2023-day03.txt"
+  schematic <- P.parseMany schematicItem "data/2023-day03.txt"
+
   putStr "Part One: "
-  print (sum . findPartNumbers <$> parseInput input)
+  print (sum (findPartNumbers schematic))
   putStr "Part Two: "
-  print (sum . findGearRatios <$> parseInput input)
+  print (sum (findGearRatios schematic))
 
 --------------------------------------------------------------------------------
 -- Part One
@@ -62,7 +56,7 @@ isAdjacent symbol number =
     inAdjacentRow && inAdjacentCol
 
 --------------------------------------------------------------------------------
--- Part One
+-- Part Two
 --------------------------------------------------------------------------------
 
 findGearRatios :: [SchematicItem] -> [Int]
@@ -119,28 +113,16 @@ isNumber si =
 -- Parser
 --------------------------------------------------------------------------------
 
-type Parser = Mega.Parsec Void T.Text
-
-parseInput :: T.Text -> Either String [SchematicItem]
-parseInput input =
-  case Mega.runParser schematicItems "" input of
-    Left err -> error (Error.errorBundlePretty err)
-    Right result -> pure result
-
-schematicItems :: Parser [SchematicItem]
-schematicItems = do
-  many schematicItem
-
-schematicItem :: Parser SchematicItem
+schematicItem :: P.Parser SchematicItem
 schematicItem = do
   skipBlanks
-  Mega.try schematicNumber <|> schematicSymbol
+  schematicNumber <|> schematicSymbol
 
-schematicNumber :: Parser SchematicItem
+schematicNumber :: P.Parser SchematicItem
 schematicNumber = do
   pos <- Mega.getSourcePos
   start <- Mega.getOffset
-  number <- Lexer.decimal
+  number <- P.decimal
   end <- Mega.getOffset
   skipBlanks
 
@@ -149,10 +131,10 @@ schematicNumber = do
     col = Pos.unPos (Pos.sourceColumn pos)
   pure (Number number row col (end - start))
 
-schematicSymbol :: Parser SchematicItem
+schematicSymbol :: P.Parser SchematicItem
 schematicSymbol = do
   pos <- Mega.getSourcePos
-  name <- Mega.satisfy (`notElem` ['.', '\n'])
+  name <- P.satisfy (`notElem` ['.', '\n'])
   skipBlanks
 
   let
@@ -160,7 +142,7 @@ schematicSymbol = do
     col = Pos.unPos (Pos.sourceColumn pos)
   pure (Symbol name row col)
 
-skipBlanks :: Parser ()
+skipBlanks :: P.Parser ()
 skipBlanks = do
-  _ <- many (Char.char '.' <|> Char.char '\n')
+  _ <- P.many (P.satisfy (`elem` ['.', '\n']))
   pure ()
