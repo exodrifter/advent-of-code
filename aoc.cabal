@@ -11,6 +11,7 @@ executable aoc
       Year2023.Day02
       Year2023.Day03
       Year2023.Day04
+      Year2024.Day04
 
     ghc-option:
       -Wall
@@ -29,4 +30,5 @@ executable aoc
       megaparsec,
       parser-combinators,
       safe,
-      text
+      text,
+      vector
